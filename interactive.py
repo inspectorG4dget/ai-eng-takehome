@@ -15,6 +15,7 @@ from framework.agent import Agent, Tool
 from framework.llm import OpenRouterConfig
 from framework.stream_printer import StreamPrinter
 from tools.submit_answer import SUBMIT_ANSWER
+from tools.your_cool_tool_here import DESCRIBE_TABLE, LIST_TABLES, PREVIEW_ROWS, PROFILE_COLUMNS, RUN_SQL, SEARCH_CATALOG, SEARCH_GUIDES
 
 
 def create_tools() -> dict[str, Tool]:
@@ -25,7 +26,13 @@ def create_tools() -> dict[str, Tool]:
     """
     return {
         SUBMIT_ANSWER.name: SUBMIT_ANSWER,
-        # You can add your own tools here to test!
+        RUN_SQL.name: RUN_SQL,
+        LIST_TABLES.name: LIST_TABLES,
+        DESCRIBE_TABLE.name: DESCRIBE_TABLE,
+        SEARCH_CATALOG.name: SEARCH_CATALOG,
+        SEARCH_GUIDES.name: SEARCH_GUIDES,
+        PROFILE_COLUMNS.name: PROFILE_COLUMNS,
+        PREVIEW_ROWS.name: PREVIEW_ROWS,
     }
 
 

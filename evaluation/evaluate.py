@@ -53,6 +53,8 @@ from tools.submit_answer import SUBMIT_ANSWER
 from tools.your_cool_tool_here import (
     DESCRIBE_TABLE,
     LIST_TABLES,
+    PREVIEW_ROWS,
+    PROFILE_COLUMNS,
     RUN_SQL,
     SEARCH_CATALOG,
     SEARCH_GUIDES,
@@ -158,6 +160,8 @@ def create_tools() -> dict[str, Tool]:
         DESCRIBE_TABLE.name: DESCRIBE_TABLE,
         SEARCH_CATALOG.name: SEARCH_CATALOG,
         SEARCH_GUIDES.name: SEARCH_GUIDES,
+        PROFILE_COLUMNS.name: PROFILE_COLUMNS,
+        PREVIEW_ROWS.name: PREVIEW_ROWS,
     }
 
 
