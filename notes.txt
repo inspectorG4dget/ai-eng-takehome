@@ -1,0 +1,29 @@
+The business logic/requirements add about 40k tokens. Since the context window is 100k, this should fit within the window without having to implement RAG. 
+Sticking the entire business logic in the context windows causes HTTP 400. Removing it causes some easy cases to fail. So we need to implement some sort of dynamic prompt injection this into the system prompt. This is a classic RAG problem.
+
+Too much irrelevant stuff coming into system prompt
+    reduce temperature (testing with 0.2)
+    Ensure guides get injected ONLY once
+
+Too many iterations - reduce max_itertions to 5
+Add a SQL check - see if this runnable SQL before submitting
+Sometimes, the same SQL gets checked multiple times (steady -- failure -- state). Skip over this and don't count it as an interation
+
+Still getting some 400s. Enable history/token compression
+    don't compress the 3 most recent messages. Why 3? Because of recency-relevance, but also because 3 hits a bit of a sweet spot in the tokens:value ratio
+
+max_iterations is too small. Let's make it 10
+Also, let's add some annealing to the temperature when it gets stuck in iterations
+
+Fetch only ONE schema, but fetch all tables in that schema. Most questions seem to need only ONE schema anyway.
+
+Running into a lot of control flow logic issues. Premature rejection/exit, etc. Gotta relax the constraints a little. Can't do too much in prompt-land - trying to coordinate this with python code (dynamically dis/allow tools)
+
+RAG is causing too many controlflow issues. Let's try compression instead.
+Evaluating the emitted SQL is also too costly, there are three tools that do this:
+1. check if the correct tables are used
+2. check for denylist words like DELETE, UPDATE
+3. run the SQL as a syntax check
+
+Collapse all of these into ONE tool and make it emit richer error text to prompt the LLM to retry better. The stepwise, gated logic here reduces LLM inferencing as a bonus - faster and cheaper!
+
